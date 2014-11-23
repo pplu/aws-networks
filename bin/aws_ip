@@ -22,4 +22,5 @@ if (not @matches) {
     print "  Block: $range->{ip_prefix}\n";
     print "\n";
   }
+  exit 0;
 }
