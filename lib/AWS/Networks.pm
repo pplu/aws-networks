@@ -175,6 +175,17 @@ Returns a new AWS::Networks object with the data filtered to only the services s
 
 =cut
 
+=head1 CONTRIBUTE
+
+The source code is located here: https://github.com/pplu/aws-networks
+
+=head2 SEE ALSO
+
+The dist is bundled with a couple of sample scripts in bin that play around with
+the information returned by this module, these scripts try to determine the number
+of IP addresses that AWS has, and given an IP address, if it pertains to AWS, and 
+what service.
+
 =head1 AUTHOR
 
     Jose Luis Martinez
