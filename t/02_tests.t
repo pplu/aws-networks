@@ -11,6 +11,8 @@ my $net = AWS::Networks->new(
   netinfo => decode_json($json)  
 );
 
+cmp_ok($net->sync_token->iso8601, 'eq', '2014-11-20T22:47:08', 'Sync Token OK');
+
 is_deeply(
   [ sort @{ $net->regions } ],
   [ sort qw/ap-northeast-1 ap-southeast-1 ap-southeast-2 cn-north-1 eu-central-1 eu-west-1 sa-east-1 us-east-1 us-gov-west-1 us-west-1 us-west-2 GLOBAL/ ],
@@ -23,8 +25,13 @@ is_deeply(
   'Services OK'
 );
 
+my $by_region = $net->by_region('GLOBAL');
+
+cmp_ok($by_region->sync_token->iso8601, 'eq', '2014-11-20T22:47:08', 'Sync Token in filtered dataset');
+ok(not(defined($by_region->url)), 'URL not defined in filtered dataset');
+
 is_deeply(
-  [ sort @{ $net->by_region('GLOBAL')->services } ],
+  [ sort @{ $by_region->services } ],
   [ sort (
           'CLOUDFRONT',
           'ROUTE53',
