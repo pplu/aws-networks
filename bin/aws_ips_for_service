@@ -1,13 +1,25 @@
 #!/usr/bin/env perl
 
+use strict;
+use warnings;
+
 use AWS::Networks;
 use Net::CIDR::Set;
 
-my $service = $ARGV[0] or die "Usage $0 AMAZON|CLOUDFRONT|...|ROUTE53\n";
-
 my $nets = AWS::Networks->new;
 
-my $cidrs = $nets->by_service(uc($service))->cidrs;
+my $cidrs = [];
+
+my @services = ();
+if (not @ARGV){
+  @services = @{ $nets->services }; 
+} else {
+  @services = @ARGV;  
+}
+
+foreach my $service (@services) {
+  push @$cidrs, @{ $nets->by_service(uc($service))->cidrs };
+}
 
 my $set = Net::CIDR::Set->new(@$cidrs);
 
@@ -25,3 +37,5 @@ while ( my $cidr = $iter->() ) {
 }
 
 print "AWS has $count IP Addresses\n";
+print "in " . scalar(@{ $nets->regions }) . " regions\n";
+print "for " . join(',', @services) . "\n";
