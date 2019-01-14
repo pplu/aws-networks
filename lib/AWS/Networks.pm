@@ -4,7 +4,7 @@ package AWS::Networks;
   use HTTP::Tiny;
   use DateTime;
 
-  our $VERSION = '0.01';
+  our $VERSION = '0.02';
 
   has url => (
     is => 'ro', 
