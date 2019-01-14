@@ -1,5 +1,6 @@
 package AWS::Networks;
-  use Moose;
+  use Moo;
+  use Types::Standard qw/Maybe Str InstanceOf ArrayRef HashRef/;
   use JSON::MaybeXS;
   use HTTP::Tiny;
   use DateTime;
@@ -8,16 +9,16 @@ package AWS::Networks;
 
   has url => (
     is => 'ro', 
-    isa => 'Str|Undef', 
+    isa => Maybe[Str], 
     default => 'https://ip-ranges.amazonaws.com/ip-ranges.json'
   );
 
   has netinfo => (
     is => 'ro',
-    isa => 'HashRef',
+    isa => HashRef,
     default => sub {
       my $self = shift;
-      die "Can't get some properties from derived results" if (not $self->url);
+      die "Can't get some properties from derived results" if (not defined $self->url);
       my $response = HTTP::Tiny->new->get($self->url);
       die "Error downloading URL" unless ($response->{ success });
       return decode_json($response->{ content });
@@ -27,7 +28,7 @@ package AWS::Networks;
 
   has sync_token => (
     is => 'ro',
-    isa => 'DateTime',
+    isa => InstanceOf['DateTime'],
     default => sub {
       return DateTime->from_epoch( epoch => shift->netinfo->{ syncToken } );
     },
@@ -36,7 +37,7 @@ package AWS::Networks;
 
   has networks => (
     is => 'ro',
-    isa => 'ArrayRef',
+    isa => ArrayRef,
     default => sub {
       return shift->netinfo->{ prefixes };
     },
@@ -45,7 +46,7 @@ package AWS::Networks;
 
   has regions => (
     is => 'ro',
-    isa => 'ArrayRef',
+    isa => ArrayRef,
     default => sub {
       my ($self) = @_;
       my $regions = {};
@@ -66,7 +67,7 @@ package AWS::Networks;
 
   has services => (
     is => 'ro',
-    isa => 'ArrayRef',
+    isa => ArrayRef,
     default => sub {
       my ($self) = @_;
       my $services = {};
@@ -87,7 +88,7 @@ package AWS::Networks;
 
   has cidrs => (
     is => 'ro',
-    isa => 'ArrayRef',
+    isa => ArrayRef,
     default => sub {
       my ($self) = @_;
       return [ map { $_->{ ip_prefix } } @{ $self->networks } ];
