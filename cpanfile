@@ -1,4 +1,4 @@
-requires 'JSON';
+requires 'JSON::MaybeXS';
 requires 'HTTP::Tiny';
 requires 'Moose';
 requires 'DateTime';

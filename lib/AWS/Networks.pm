@@ -1,6 +1,6 @@
 package AWS::Networks;
   use Moose;
-  use JSON;
+  use JSON::MaybeXS;
   use HTTP::Tiny;
   use DateTime;
 
