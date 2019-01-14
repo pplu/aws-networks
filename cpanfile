@@ -7,6 +7,7 @@ requires 'File::Slurp';
 requires 'Net::CIDR::Set';
 
 on test => sub {
+  requires 'File::Slurp';
   requires 'Test::More';
   requires 'Test::Exception';
   requires 'Test::Pod';
