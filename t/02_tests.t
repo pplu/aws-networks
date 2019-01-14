@@ -4,7 +4,7 @@ use Test::More;
 use AWS::Networks;
 
 use File::Slurp;
-use JSON;
+use JSON::MaybeXS;
 
 my $json = read_file('t/02_test.json');
 my $net = AWS::Networks->new(
