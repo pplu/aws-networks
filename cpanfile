@@ -1,6 +1,7 @@
 requires 'JSON::MaybeXS';
 requires 'HTTP::Tiny';
-requires 'Moose';
+requires 'Moo';
+requires 'Types::Standard';
 requires 'DateTime';
 requires 'IO::Socket::SSL';
 requires 'File::Slurp';
